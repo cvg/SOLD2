@@ -5,7 +5,6 @@ Some parts of the code are adapted from https://github.com/zhou13/lcnn
 import os
 import math
 import copy
-from tqdm import tqdm
 from skimage.io import imread
 from skimage import color
 import PIL
@@ -92,20 +91,6 @@ class WireframeDataset(Dataset):
 
         # Get dataset length
         self.dataset_length = len(self.datapoints)
-
-        # Get repeatability evaluation set
-        if (self.mode == "test"
-            and self.config.get("evaluation", None) is not None):
-            # Get the cache name
-            tmp = self.cache_name.split(self.mode)
-            self.rep_i_cache_name = tmp[0] + self.mode + "_rep_i" + tmp[1]
-            self.rep_v_cache_name = tmp[0] + self.mode + "_rep_v" + tmp[1]
-
-            # Get the repeatability config
-            self.rep_config = self.config["evaluation"]["repeatability"]
-
-            self.rep_eval_dataset = self.construct_rep_eval_dataset()
-            self.rep_eval_datapoints = self.get_rep_eval_datapoints()
 
         # Print some info
         print("[Info] Successfully initialized dataset")
@@ -398,6 +383,12 @@ class WireframeDataset(Dataset):
                         img_size=None, warp=False):
         """ Sample evenly points along each line segments
             and keep track of line idx. """
+        if np.sum(line_map) == 0:
+            # No segment detected in the image
+            line_indices = np.zeros(self.config["max_pts"], dtype=int)
+            line_points = np.zeros((self.config["max_pts"], 2), dtype=float)
+            return line_points, line_indices
+            
         # Extract all pairs of connected junctions
         junc_indices = np.array(
             [[i, j] for (i, j) in zip(*np.where(line_map)) if j > i])

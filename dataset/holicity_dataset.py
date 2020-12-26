@@ -348,6 +348,12 @@ class HolicityDataset(Dataset):
                         img_size=None, warp=False):
         """ Sample evenly points along each line segments
             and keep track of line idx. """
+        if np.sum(line_map) == 0:
+            # No segment detected in the image
+            line_indices = np.zeros(self.config["max_pts"], dtype=int)
+            line_points = np.zeros((self.config["max_pts"], 2), dtype=float)
+            return line_points, line_indices
+
         # Extract all pairs of connected junctions
         junc_indices = np.array(
             [[i, j] for (i, j) in zip(*np.where(line_map)) if j > i])
