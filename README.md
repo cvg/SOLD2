@@ -29,14 +29,17 @@ You can download the version of the [Wireframe dataset](https://github.com/huang
 
 All training parameters are located in configuration files in the folder `config`. Training SOLD² from scratch requires several steps, some of which taking several days, depending on the size of your dataset.
 
-- <b>Step 1: Train on a synthetic dataset</b>
+<details>
+<summary><b>Step 1: Train on a synthetic dataset</b></summary>
 
 The following command will create the synthetic dataset and start training the model on it:
 ```bash
 python experiment.py --mode train --dataset_config config/synthetic_dataset.yaml --model_config config/train_detector.yaml --exp_name sold2_synth
 ```
+</details>
 
-- <b>Step 2: Export the raw pseudo ground truth on the Wireframe dataset with homography adaptation</b>
+<details>
+<summary><b>Step 2: Export the raw pseudo ground truth on the Wireframe dataset with homography adaptation</b></summary>
 
 Note that this step can take one to several days depending on your machine and on the size of the dataset. You can set the batch size to the maximum capacity that your GPU can handle.
 ```bash
@@ -47,8 +50,10 @@ You can similarly perform the same for the test set:
 ```bash
 python experiment.py --exp_name wireframe_test --mode export --resume_path <path to your previously trained sold2_synth> --model_config config/train_detector.yaml --dataset_config config/wireframe_dataset.yaml --checkpoint_name <name of the best checkpoint> --export_dataset_mode test --export_batch_size 4
 ```
+</details>
 
-- <b>Step3: Compute the ground truth line segments from the raw data</b>
+<details>
+ <summary><b>Step3: Compute the ground truth line segments from the raw data</b></summary>
 
 ```bash
 cd postprocess
@@ -57,8 +62,10 @@ cd ..
 ```
 
 We recommend testing the results on a few samples of your dataset to check the quality of the output, and modifying the hyperparameters if need be. Using a `detect_thresh=0.5` and `inlier_thresh=0.99` proved to be successful for the Wireframe dataset in our case for example.
+</details>
 
-- <b>Step 4: Train the detector on the Wireframe dataset</b>
+<details>
+ <summary><b>Step 4: Train the detector on the Wireframe dataset</b></summary>
 
 We found it easier to pretrain the detector alone first, before fine-tuning it with the descriptor part.
 Uncomment the lines 'gt_source_train' and 'gt_source_test' in `config/wireframe_dataset.yaml` and fill them with the path to the h5 file generated in the previous step.
@@ -75,13 +82,16 @@ Lastly, you can resume a training that was stopped:
 ```bash
 python experiment.py --mode train --dataset_config config/wireframe_dataset.yaml --model_config config/train_detector.yaml --exp_name sold2_wireframe --resume --resume_path <path to the  model to resume> --checkpoint_name <name of the last checkpoint>
 ```
+</details>
 
-- <b>Step 5: Train the full pipeline on the Wireframe dataset</b>
+<details>
+ <summary><b>Step 5: Train the full pipeline on the Wireframe dataset</b></summary>
 
 You first need to modify the field 'return_type' in `config/wireframe_dataset.yaml` to 'paired_desc'. The following command will then train the full model (detector + descriptor) on the Wireframe dataset:
 ```bash
 python experiment.py --mode train --dataset_config config/wireframe_dataset.yaml --model_config config/train_full_pipeline.yaml --exp_name sold2_full_wireframe --pretrained --pretrained_path <path ot the pre-trained sold2_wireframe> --checkpoint_name <name of the best checkpoint>
 ```
+</details>
 
 
 ### Pretrained models
