@@ -2,9 +2,9 @@
 dataset_name: "wireframe"
 add_augmentation_to_all_splits: False
 gray_scale: True
-# Ground truth source ('official' or path to the epxorted h5 dataset.)
-gt_source_train: "wireframe_train_adaptation_iter0_epoch043_ce1_detect_0.25_inlier_0.75_local_max_v1.5_refine-v2.h5"
-gt_source_test: "wireframe_test_adaptation_iter0_epoch043_ce1_detect_0.25_inlier_0.75_local_max_v1.5_refine-v2.h5"
+# Ground truth source ('official' or path to the exported h5 dataset.)
+#gt_source_train: ""  # Fill with your own export file
+#gt_source_test: ""  # Fill with your own export file
 # Return type: (1) single (to train the detector only)
 # or (2) paired_desc (to train the detector + descriptor)
 return_type: "single"

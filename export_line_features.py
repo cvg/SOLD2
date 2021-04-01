@@ -7,9 +7,7 @@ import cv2
 import numpy as np
 import torch
 from tqdm import tqdm
-import torch.nn.functional as F
 
-from config.project_config import Config as cfg
 from experiment import load_config
 from model.line_matcher import LineMatcher
 
@@ -39,7 +37,7 @@ def export_descriptors(images_list, ckpt_path, config, device, extension,
         ref_descriptors = ref_detection["descriptor"][0].cpu().numpy()
 
         # Write the output on disk
-        img_name = os.path.basename(img_path)
+        img_name = os.path.splitext(os.path.basename(img_path))[0]
         output_file = os.path.join(output_folder, img_name + extension)
         np.savez_compressed(output_file, line_seg=ref_line_seg,
                             descriptors=ref_descriptors)
@@ -52,9 +50,10 @@ if __name__ == "__main__":
                         help="List of input images in a text file.")
     parser.add_argument("--output_folder", type=str, required=True,
                         help="Path to the output folder.")
-    parser.add_argument("--config", type=str, required=True)
-    parser.add_argument("--exp_name", type=str, required=True)
-    parser.add_argument("--checkpoint_name", required=True)
+    parser.add_argument("--config", type=str,
+                        default="config/export_line_features.yaml")
+    parser.add_argument("--checkpoint_path", type=str,
+                        default="pretrained_models/sold2_wireframe.tar")
     parser.add_argument("--multiscale", action="store_true", default=False)
     parser.add_argument("--extension", type=str, default=None)
     args = parser.parse_args()
@@ -67,9 +66,8 @@ if __name__ == "__main__":
 
     # Get the model config, extension and checkpoint path
     config = load_config(args.config)
-    ckpt_path = os.path.join(cfg.EXP_PATH, args.exp_name,
-                             args.checkpoint_name)
-    extension = args.exp_name if args.extension is None else args.extension
+    ckpt_path = os.path.abspath(args.checkpoint_path)
+    extension = 'sold2' if args.extension is None else args.extension
     extension = "." + extension
 
     export_descriptors(args.img_list, ckpt_path, config, device, extension,

@@ -53,20 +53,20 @@ model_cfg:
 
 ### [Line detector config]
 line_detector_cfg:
-  detect_thresh: 0.2
+  detect_thresh: 0.5
   num_samples: 64
   sampling_method: "local_max"
-  inlier_thresh: 0.9
-  use_candidate_suppression: False
+  inlier_thresh: 0.99
+  use_candidate_suppression: True
   nms_dist_tolerance: 3.
-  use_heatmap_refinement: False
+  use_heatmap_refinement: True
   heatmap_refine_cfg:
     mode: "local"
     ratio: 0.2
     valid_thresh: 0.001
     num_blocks: 20
     overlap_ratio: 0.5
-  use_junction_refinement: False
+  use_junction_refinement: True
   junction_refine_cfg:
     num_perturbs: 9
     perturb_interval: 0.25

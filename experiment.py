@@ -146,7 +146,7 @@ if __name__ == "__main__":
                         help="Name of the checkpoint to use.")
     parser.add_argument("--export_dataset_mode", default=None,
                         help="'train' or 'test'.")
-    parser.add_argument("--export_batch_size", default=4,
+    parser.add_argument("--export_batch_size", default=4, type=int,
                         help="Export batch size.")
 
     args = parser.parse_args()

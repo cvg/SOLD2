@@ -1,17 +1,13 @@
-### General dataset parameters
-dataset_name: "holicity"
-train_splits: ["2018-01"]  # 5720 images
+dataset_name: "merge"
+datasets: ["wireframe", "holicity"]
+weights: [0.5, 0.5]
+gt_source_train: ["", ""]  # Fill with your own [wireframe, holicity] exported ground-truth
+gt_source_test: ["", ""]  # Fill with your own [wireframe, holicity] exported ground-truth
+train_splits: ["", "2018-01"]
 add_augmentation_to_all_splits: False
 gray_scale: True
-# Ground truth source ('official' or path to the exported h5 dataset.)
-#gt_source_train: ""  # Fill with your own export file
-#gt_source_test: ""  # Fill with your own export file
-# Return type: (1) single (to train the detector only)
-# or (2) paired_desc (to train the detector + descriptor)
-return_type: "single"
-random_seed: 0
-
-### Descriptor training parameters
+# Return type: (1) single (original version) (2) paired
+return_type: "paired_desc"
 # Number of points extracted per line
 max_num_samples: 10
 # Max number of training line points extracted in the whole image
@@ -20,20 +16,18 @@ max_pts: 1000
 min_dist_pts: 10
 # Small jittering of the sampled points during training
 jittering: 0
-
-### Data preprocessing configuration
+# Random seed
+random_seed: 0
+# Date preprocessing configuration.
 preprocessing:
     resize: [512, 512]
     blur_size: 11
 augmentation:
-    random_scaling:
-        enable: True
-        range: [0.7, 1.5]
     photometric:
         enable: True
-        primitives: ['random_brightness', 'random_contrast',
-                     'additive_speckle_noise', 'additive_gaussian_noise',
-                     'additive_shade', 'motion_blur' ]
+        primitives: [
+                'random_brightness', 'random_contrast', 'additive_speckle_noise',
+                'additive_gaussian_noise', 'additive_shade', 'motion_blur' ]
         params:
             random_brightness: {brightness: 0.2}
             random_contrast: {contrast: [0.3, 1.5]}
@@ -58,19 +52,3 @@ augmentation:
             max_angle: 1.57
             allow_artifacts: true
         valid_border_margin: 3
-
-### Homography adaptation configuration
-homography_adaptation:
-    num_iter: 100
-    valid_border_margin: 3
-    min_counts: 30
-    homographies:
-        translation: true
-        rotation: true
-        scaling: true
-        perspective: true
-        scaling_amplitude: 0.2
-        perspective_amplitude_x: 0.2
-        perspective_amplitude_y: 0.2
-        allow_artifacts: true
-        patch_ratio: 0.85
