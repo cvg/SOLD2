@@ -162,7 +162,8 @@ def export_homograpy_adaptation(args, dataset_cfg, model_cfg, output_path,
     # Start the export process
     print("[Info] Start exporting predictions")    
     output_dataset_path = output_path + ".h5"
-    with h5py.File(output_dataset_path, "w", libver="latest", swmr=True) as f:
+    with h5py.File(output_dataset_path, "w", libver="latest") as f:
+        f.swmr_mode=True
         for _, data in enumerate(tqdm(export_loader, ascii=True)):
             input_images = data["image"].to(device)
             file_keys = data["file_key"]

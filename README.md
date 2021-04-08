@@ -57,7 +57,7 @@ python experiment.py --exp_name wireframe_test --mode export --resume_path <path
 
 ```bash
 cd postprocess
-python convert_homography_results.py <name of the previously exported file (e.g. "wireframe_train.h5")> <name of the new data with extracted line segments (e.g. "wireframe_train_gt.h5")> config/export_line_features.yaml
+python convert_homography_results.py <name of the previously exported file (e.g. "wireframe_train.h5")> <name of the new data with extracted line segments (e.g. "wireframe_train_gt.h5")> ../config/export_line_features.yaml
 cd ..
 ```
 
@@ -187,7 +187,7 @@ Matching precision-recall curves on the [Wireframe](https://github.com/huangkuns
 
 If you use this code in your project, please consider citing the following paper:
 ```bibtex
-@InProceedings{Pautrat_2021_CVPR,
+@InProceedings{Pautrat_Lin_2021_CVPR,
     author = {Pautrat, Rémi* and Juan-Ting, Lin* and Larsson, Viktor and Oswald, Martin R. and Pollefeys, Marc},
     title = {SOLD²: Self-supervised Occlusion-aware Line Description and Detection},
     booktitle = {Computer Vision and Pattern Recognition (CVPR)},
