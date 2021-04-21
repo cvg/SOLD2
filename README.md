@@ -1,6 +1,6 @@
 # SOLD² - Self-supervised Occlusion-aware Line Description and Detection
 
-This repository contains the implementation of the paper: [SOLD² : Self-supervised Occlusion-aware Line Description and Detection](https://arxiv.org), J-T. Lin*, R. Pautrat*, V. Larsson, M. Oswald and M. Pollefeys (Oral at CVPR 2021).
+This repository contains the implementation of the paper: [SOLD² : Self-supervised Occlusion-aware Line Description and Detection](https://arxiv.org/abs/2104.03362), J-T. Lin*, R. Pautrat*, V. Larsson, M. Oswald and M. Pollefeys (Oral at CVPR 2021).
 
 SOLD² is a deep line segment detector and descriptor that can be trained without hand-labelled line segments and that can robustly match lines even in the presence of occlusion.
 
@@ -108,7 +108,7 @@ We provide a [notebook](notebooks/match_lines.ipynb) showing how to use the trai
 python export_line_features.py --img_list <list to a txt file containing the path to all the images> --output_folder <path to the output folder> --checkpoint_path <path to your best checkpoint,>
 ```
 
-You can tune some of the line detection parameters in `config/export_line_features.yaml`, in particular the 'detect_thresh' and 'inlier_thresh' to adapt them to your trained model and type of images. 
+You can tune some of the line detection parameters in `config/export_line_features.yaml`, in particular the 'detect_thresh' and 'inlier_thresh' to adapt them to your trained model and type of images. As the line detection can be sensitive to the image resolution, we recommend using it with images in the range 300~800 px per side.
 
 
 
