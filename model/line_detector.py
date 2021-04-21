@@ -63,8 +63,8 @@ class LineDetector(object):
         if junc_detect_thresh is not None:
             self.junc_detect_thresh = junc_detect_thresh
         else:
-            self.junc_detect_thresh = model_cfg["detection_thresh"]
-            self.junc_detect_thresh = 1/65
+            self.junc_detect_thresh = model_cfg.get("detection_thresh", 1/65)
+        self.max_num_junctions = model_cfg.get("max_num_junctions", 300)
 
         # Initialize the line detector
         self.line_detector_cfg = line_detector_cfg
@@ -88,7 +88,7 @@ class LineDetector(object):
 
         junc_np = convert_junc_predictions(
             net_outputs["junctions"], self.grid_size,
-            self.junc_detect_thresh, 300)
+            self.junc_detect_thresh, self.max_num_junctions)
         if valid_mask is None:
             junctions = np.where(junc_np["junc_pred_nms"].squeeze())
         else:
