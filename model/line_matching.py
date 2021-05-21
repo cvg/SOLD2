@@ -307,7 +307,7 @@ class WunschLineMatcher(object):
         top_scores = top_scores.reshape(n_lines1 * top2k, n, m)
         nw_scores = self.needleman_wunsch(top_scores)
         nw_scores = nw_scores.reshape(n_lines1, top2k)
-        matches = np.mod(np.argmax(nw_scores, axis=1), self.top_k_candidates)
+        matches = np.mod(np.argmax(nw_scores, axis=1), top2k // 2)
         matches = topk_lines[np.arange(n_lines1), matches]
         return matches
 
