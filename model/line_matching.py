@@ -35,6 +35,12 @@ class WunschLineMatcher(object):
         img_size2 = (desc2.shape[2] * self.grid_size,
                      desc2.shape[3] * self.grid_size)
         device = desc1.device
+        
+        # Default case when an image has no lines
+        if len(line_seg1) == 0:
+            return np.empty((0), dtype=int)
+        if len(line_seg2) == 0:
+            return -np.ones(len(line_seg1), dtype=int)
 
         # Sample points regularly along each line
         if self.sampling_mode == "regular":

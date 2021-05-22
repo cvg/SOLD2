@@ -494,6 +494,9 @@ class LineSegmentDetectionModule(object):
         sampled_feat = heatmap[points[:, :, :, 0], points[:, :, :, 1]]
         # Filtering using the valid mask
         sampled_feat = sampled_feat * patch_dist_mask.to(torch.float32)
-        sampled_feat_lmax, _ = torch.max(sampled_feat, dim=-1)
+        if len(sampled_feat) == 0:
+            sampled_feat_lmax = torch.empty(0, 64)
+        else:
+            sampled_feat_lmax, _ = torch.max(sampled_feat, dim=-1)
         
         return sampled_feat_lmax
