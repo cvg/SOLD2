@@ -41,7 +41,7 @@ python experiment.py --mode train --dataset_config config/synthetic_dataset.yaml
 <details>
 <summary><b>Step 2: Export the raw pseudo ground truth on the Wireframe dataset with homography adaptation</b></summary>
 
-Note that this step can take one to several days depending on your machine and on the size of the dataset. You can set the batch size to the maximum capacity that your GPU can handle.
+Note that this step can take one to several days depending on your machine and on the size of the dataset. You can set the batch size to the maximum capacity that your GPU can handle. Prior to this step, make sure that the dataset config file `config/wireframe_dataset.yaml` has the lines `gt_source_train` and `gt_source_test` commented and you should also disable the photometric and homographic augmentations.
 ```bash
 python experiment.py --exp_name wireframe_train --mode export --resume_path <path to your previously trained sold2_synth> --model_config config/train_detector.yaml --dataset_config config/wireframe_dataset.yaml --checkpoint_name <name of the best checkpoint> --export_dataset_mode train --export_batch_size 4
 ```
