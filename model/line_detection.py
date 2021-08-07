@@ -209,7 +209,7 @@ class LineSegmentDetectionModule(object):
                       detected_junc_indexes[:, 0]] = 1
         
         # Perform junction refinement
-        if self.use_junction_refinement:
+        if self.use_junction_refinement and len(detected_junc_indexes) > 0:
             junctions, line_map_pred = self.refine_junction_perturb(
                 junctions, line_map_pred, heatmap, H, W, device)
 
