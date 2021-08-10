@@ -188,8 +188,8 @@ Matching precision-recall curves on the [Wireframe](https://github.com/huangkuns
 If you use this code in your project, please consider citing the following paper:
 ```bibtex
 @InProceedings{Pautrat_Lin_2021_CVPR,
-    author = {Pautrat, Rémi* and Juan-Ting, Lin* and Larsson, Viktor and Oswald, Martin R. and Pollefeys, Marc},
-    title = {SOLD²: Self-supervised Occlusion-aware Line Description and Detection},
+    author = {Pautrat*, Rémi and Lin*, Juan-Ting and Larsson, Viktor and Oswald, Martin R. and Pollefeys, Marc},
+    title = {SOLD2: Self-supervised Occlusion-aware Line Description and Detection},
     booktitle = {Computer Vision and Pattern Recognition (CVPR)},
     year = {2021},
 }
