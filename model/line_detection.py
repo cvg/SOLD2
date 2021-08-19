@@ -106,8 +106,8 @@ class LineSegmentDetectionModule(object):
         line_map_pred = torch.zeros([num_junctions, num_junctions],
                                     device=device, dtype=torch.int32)
         
-        # Stop if there are no junctions
-        if num_junctions == 0:
+        # Stop if there are not enough junctions
+        if num_junctions < 2:
             return line_map_pred, junctions, heatmap
 
         # Generate the candidate map
