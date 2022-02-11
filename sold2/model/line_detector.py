@@ -6,10 +6,10 @@ import numpy as np
 import torch
 from torch.nn.functional import softmax
 
-from model.model_util import get_model
-from model.loss import get_loss_and_weights
-from model.line_detection import LineSegmentDetectionModule
-from train import convert_junc_predictions
+from .model_util import get_model
+from .loss import get_loss_and_weights
+from .line_detection import LineSegmentDetectionModule
+from ..train import convert_junc_predictions
 
 
 def line_map_to_segments(junctions, line_map):

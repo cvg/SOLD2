@@ -4,7 +4,8 @@ Code adapted from https://github.com/rpautrat/SuperPoint
 """
 import numpy as np
 from math import pi
-from dataset.synthetic_util import get_line_map, get_line_heatmap
+
+from ..synthetic_util import get_line_map, get_line_heatmap
 import cv2
 import copy
 import shapely.geometry

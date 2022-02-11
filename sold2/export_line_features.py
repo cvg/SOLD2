@@ -8,8 +8,8 @@ import numpy as np
 import torch
 from tqdm import tqdm
 
-from experiment import load_config
-from model.line_matcher import LineMatcher
+from .experiment import load_config
+from .model.line_matcher import LineMatcher
 
 
 def export_descriptors(images_list, ckpt_path, config, device, extension,

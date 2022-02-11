@@ -7,8 +7,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 from kornia.geometry import warp_perspective
 
-from misc.geometry_utils import (keypoints_to_grid, get_dist_mask,
-                                 get_common_line_mask)
+from ..misc.geometry_utils import (keypoints_to_grid, get_dist_mask,
+                                   get_common_line_mask)
 
 
 def get_loss_and_weights(model_cfg, device=torch.device("cuda")):

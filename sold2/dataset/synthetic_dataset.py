@@ -17,11 +17,11 @@ from torchvision import transforms
 from torch.utils.data import Dataset
 import torch.utils.data.dataloader as torch_loader
 
-from config.project_config import Config as cfg
-from dataset import synthetic_util
-import dataset.transforms.photometric_transforms as photoaug
-import dataset.transforms.homographic_transforms as homoaug
-from misc.train_utils import parse_h5_data
+from ..config.project_config import Config as cfg
+from . import synthetic_util
+from .transforms import photometric_transforms as photoaug
+from .transforms import homographic_transforms as homoaug
+from ..misc.train_utils import parse_h5_data
 
 
 def synthetic_collate_fn(batch):

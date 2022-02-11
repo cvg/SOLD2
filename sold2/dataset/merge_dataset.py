@@ -4,8 +4,8 @@ import numpy as np
 from copy import deepcopy
 from torch.utils.data import Dataset
 
-from dataset.wireframe_dataset import WireframeDataset
-from dataset.holicity_dataset import HolicityDataset
+from .wireframe_dataset import WireframeDataset
+from .holicity_dataset import HolicityDataset
 
 
 class MergeDataset(Dataset):

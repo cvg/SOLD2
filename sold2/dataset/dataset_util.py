@@ -1,10 +1,10 @@
 """
 The interface of initializing different datasets.
 """
-from dataset.synthetic_dataset import SyntheticShapes
-from dataset.wireframe_dataset import WireframeDataset
-from dataset.holicity_dataset import HolicityDataset
-from dataset.merge_dataset import MergeDataset
+from .synthetic_dataset import SyntheticShapes
+from .wireframe_dataset import WireframeDataset
+from .holicity_dataset import HolicityDataset
+from .merge_dataset import MergeDataset
 
 
 def get_dataset(mode="train", dataset_cfg=None):

@@ -4,8 +4,9 @@ Some useful functions for dataset pre-processing
 import cv2
 import numpy as np
 import shapely.geometry as sg
-from dataset.synthetic_util import get_line_map
-import dataset.transforms.homographic_transforms as homoaug
+
+from ..synthetic_util import get_line_map
+from . import homographic_transforms as homoaug
 
 
 def random_scaling(image, junctions, line_map, scale=1., h_crop=0, w_crop=0):

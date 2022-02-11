@@ -2,10 +2,10 @@ import torch
 import torch.nn as nn
 import torch.nn.init as init
 
-from model.nets.backbone import HourglassBackbone, SuperpointBackbone
-from model.nets.junction_decoder import SuperpointDecoder
-from model.nets.heatmap_decoder import PixelShuffleDecoder
-from model.nets.descriptor_decoder import SuperpointDescriptor
+from .nets.backbone import HourglassBackbone, SuperpointBackbone
+from .nets.junction_decoder import SuperpointDecoder
+from .nets.heatmap_decoder import PixelShuffleDecoder
+from .nets.descriptor_decoder import SuperpointDescriptor
 
 
 def get_model(model_cfg=None, loss_weights=None, mode="train"):

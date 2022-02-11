@@ -8,13 +8,13 @@ import torch
 import torch.nn.functional as F
 from torch.nn.functional import softmax
 
-from model.model_util import get_model
-from model.loss import get_loss_and_weights
-from model.metrics import super_nms
-from model.line_detection import LineSegmentDetectionModule
-from model.line_matching import WunschLineMatcher
-from train import convert_junc_predictions
-from model.line_detector import line_map_to_segments
+from .model_util import get_model
+from .loss import get_loss_and_weights
+from .metrics import super_nms
+from .line_detection import LineSegmentDetectionModule
+from .line_matching import WunschLineMatcher
+from ..train import convert_junc_predictions
+from .line_detector import line_map_to_segments
 
 
 class LineMatcher(object):

@@ -9,11 +9,11 @@ from torch.nn.functional import pixel_shuffle, softmax
 from torch.utils.data import DataLoader
 from kornia.geometry import warp_perspective
 
-from dataset.dataset_util import get_dataset
-from model.model_util import get_model
-from misc.train_utils import get_latest_checkpoint
-from train import convert_junc_predictions
-from dataset.transforms.homographic_transforms import sample_homography
+from .dataset.dataset_util import get_dataset
+from .model.model_util import get_model
+from .misc.train_utils import get_latest_checkpoint
+from .train import convert_junc_predictions
+from .dataset.transforms.homographic_transforms import sample_homography
 
 
 def restore_weights(model, state_dict):

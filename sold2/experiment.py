@@ -8,9 +8,9 @@ import argparse
 import numpy as np
 import torch
 
-from config.project_config import Config as cfg
-from train import train_net
-from export import export_predictions, export_homograpy_adaptation
+from .config.project_config import Config as cfg
+from .train import train_net
+from .export import export_predictions, export_homograpy_adaptation
 
 
 # Pytorch configurations

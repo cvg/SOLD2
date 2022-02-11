@@ -23,6 +23,11 @@ pip install -r requirements.txt
 
 Set your dataset and experiment paths (where you will store your datasets and checkpoints of your experiments) by modifying the file `config/project_config.py`. Both variables `DATASET_ROOT` and `EXP_PATH` have to be set.
 
+Install the Python package:
+```bash
+pip install -e .
+```
+
 You can download the version of the [Wireframe dataset](https://github.com/huangkuns/wireframe) that we used during our training and testing [here](https://www.polybox.ethz.ch/index.php/s/IfdEf7RoHol7jeg). This repository also includes some files to train on the [Holicity dataset](https://holicity.io/) to add more outdoor images, but note that we did not extensively test this dataset and the original paper was based on the Wireframe dataset only.
 
 ### Training your own model
@@ -34,7 +39,7 @@ All training parameters are located in configuration files in the folder `config
 
 The following command will create the synthetic dataset and start training the model on it:
 ```bash
-python experiment.py --mode train --dataset_config config/synthetic_dataset.yaml --model_config config/train_detector.yaml --exp_name sold2_synth
+python -m sold2.experiment --mode train --dataset_config config/synthetic_dataset.yaml --model_config config/train_detector.yaml --exp_name sold2_synth
 ```
 </details>
 
@@ -43,12 +48,12 @@ python experiment.py --mode train --dataset_config config/synthetic_dataset.yaml
 
 Note that this step can take one to several days depending on your machine and on the size of the dataset. You can set the batch size to the maximum capacity that your GPU can handle. Prior to this step, make sure that the dataset config file `config/wireframe_dataset.yaml` has the lines `gt_source_train` and `gt_source_test` commented and you should also disable the photometric and homographic augmentations.
 ```bash
-python experiment.py --exp_name wireframe_train --mode export --resume_path <path to your previously trained sold2_synth> --model_config config/train_detector.yaml --dataset_config config/wireframe_dataset.yaml --checkpoint_name <name of the best checkpoint> --export_dataset_mode train --export_batch_size 4
+python -m sold2.experiment --exp_name wireframe_train --mode export --resume_path <path to your previously trained sold2_synth> --model_config config/train_detector.yaml --dataset_config config/wireframe_dataset.yaml --checkpoint_name <name of the best checkpoint> --export_dataset_mode train --export_batch_size 4
 ```
 
 You can similarly perform the same for the test set:
 ```bash
-python experiment.py --exp_name wireframe_test --mode export --resume_path <path to your previously trained sold2_synth> --model_config config/train_detector.yaml --dataset_config config/wireframe_dataset.yaml --checkpoint_name <name of the best checkpoint> --export_dataset_mode test --export_batch_size 4
+python -m sold2.experiment --exp_name wireframe_test --mode export --resume_path <path to your previously trained sold2_synth> --model_config config/train_detector.yaml --dataset_config config/wireframe_dataset.yaml --checkpoint_name <name of the best checkpoint> --export_dataset_mode test --export_batch_size 4
 ```
 </details>
 
@@ -56,9 +61,7 @@ python experiment.py --exp_name wireframe_test --mode export --resume_path <path
  <summary><b>Step3: Compute the ground truth line segments from the raw data</b></summary>
 
 ```bash
-cd postprocess
-python convert_homography_results.py <name of the previously exported file (e.g. "wireframe_train.h5")> <name of the new data with extracted line segments (e.g. "wireframe_train_gt.h5")> ../config/export_line_features.yaml
-cd ..
+python -m sold2.postprocess.convert_homography_results <name of the previously exported file (e.g. "wireframe_train.h5")> <name of the new data with extracted line segments (e.g. "wireframe_train_gt.h5")> config/export_line_features.yaml
 ```
 
 We recommend testing the results on a few samples of your dataset to check the quality of the output, and modifying the hyperparameters if need be. Using a `detect_thresh=0.5` and `inlier_thresh=0.99` proved to be successful for the Wireframe dataset in our case for example.
@@ -70,17 +73,17 @@ We recommend testing the results on a few samples of your dataset to check the q
 We found it easier to pretrain the detector alone first, before fine-tuning it with the descriptor part.
 Uncomment the lines 'gt_source_train' and 'gt_source_test' in `config/wireframe_dataset.yaml` and fill them with the path to the h5 file generated in the previous step.
 ```bash
-python experiment.py --mode train --dataset_config config/wireframe_dataset.yaml --model_config config/train_detector.yaml --exp_name sold2_wireframe
+python -m sold2.experiment --mode train --dataset_config config/wireframe_dataset.yaml --model_config config/train_detector.yaml --exp_name sold2_wireframe
 ```
 
 Alternatively, you can also fine-tune the already trained synthetic model:
 ```bash
-python experiment.py --mode train --dataset_config config/wireframe_dataset.yaml --model_config config/train_detector.yaml --exp_name sold2_wireframe --pretrained --pretrained_path <path ot the pre-trained sold2_synth> --checkpoint_name <name of the best checkpoint>
+python -m sold2.experiment --mode train --dataset_config config/wireframe_dataset.yaml --model_config config/train_detector.yaml --exp_name sold2_wireframe --pretrained --pretrained_path <path ot the pre-trained sold2_synth> --checkpoint_name <name of the best checkpoint>
 ```
 
 Lastly, you can resume a training that was stopped:
 ```bash
-python experiment.py --mode train --dataset_config config/wireframe_dataset.yaml --model_config config/train_detector.yaml --exp_name sold2_wireframe --resume --resume_path <path to the  model to resume> --checkpoint_name <name of the last checkpoint>
+python -m sold2.experiment --mode train --dataset_config config/wireframe_dataset.yaml --model_config config/train_detector.yaml --exp_name sold2_wireframe --resume --resume_path <path to the  model to resume> --checkpoint_name <name of the last checkpoint>
 ```
 </details>
 
@@ -89,7 +92,7 @@ python experiment.py --mode train --dataset_config config/wireframe_dataset.yaml
 
 You first need to modify the field 'return_type' in `config/wireframe_dataset.yaml` to 'paired_desc'. The following command will then train the full model (detector + descriptor) on the Wireframe dataset:
 ```bash
-python experiment.py --mode train --dataset_config config/wireframe_dataset.yaml --model_config config/train_full_pipeline.yaml --exp_name sold2_full_wireframe --pretrained --pretrained_path <path ot the pre-trained sold2_wireframe> --checkpoint_name <name of the best checkpoint>
+python -m sold2.experiment --mode train --dataset_config config/wireframe_dataset.yaml --model_config config/train_full_pipeline.yaml --exp_name sold2_full_wireframe --pretrained --pretrained_path <path ot the pre-trained sold2_wireframe> --checkpoint_name <name of the best checkpoint>
 ```
 </details>
 
@@ -105,7 +108,7 @@ We provide the checkpoints of two pretrained models:
 
 We provide a [notebook](notebooks/match_lines.ipynb) showing how to use the trained model of SOLD². Additionally, you can use the model to export line features (segments and descriptor maps) as follows:
 ```bash
-python export_line_features.py --img_list <list to a txt file containing the path to all the images> --output_folder <path to the output folder> --checkpoint_path <path to your best checkpoint,>
+python -m sold2.export_line_features --img_list <list to a txt file containing the path to all the images> --output_folder <path to the output folder> --checkpoint_path <path to your best checkpoint,>
 ```
 
 You can tune some of the line detection parameters in `config/export_line_features.yaml`, in particular the 'detect_thresh' and 'inlier_thresh' to adapt them to your trained model and type of images. As the line detection can be sensitive to the image resolution, we recommend using it with images in the range 300~800 px per side.

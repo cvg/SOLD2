@@ -10,13 +10,13 @@ from torch.utils.data import DataLoader
 import torch.utils.data.dataloader as torch_loader
 from tensorboardX import SummaryWriter
 
-from dataset.dataset_util import get_dataset
-from model.model_util import get_model
-from model.loss import TotalLoss, get_loss_and_weights
-from model.metrics import AverageMeter, Metrics, super_nms
-from model.lr_scheduler import get_lr_scheduler
-from misc.train_utils import (convert_image, get_latest_checkpoint,
-                              remove_old_checkpoints)
+from .dataset.dataset_util import get_dataset
+from .model.model_util import get_model
+from .model.loss import TotalLoss, get_loss_and_weights
+from .model.metrics import AverageMeter, Metrics, super_nms
+from .model.lr_scheduler import get_lr_scheduler
+from .misc.train_utils import (convert_image, get_latest_checkpoint,
+                               remove_old_checkpoints)
 
 
 def customized_collate_fn(batch):

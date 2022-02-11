@@ -6,7 +6,7 @@ import cv2
 import torch
 import torch.nn.functional as F
 
-from misc.geometry_utils import keypoints_to_grid
+from ..misc.geometry_utils import keypoints_to_grid
 
 
 class WunschLineMatcher(object):
