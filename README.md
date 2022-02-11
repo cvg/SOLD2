@@ -39,7 +39,7 @@ All training parameters are located in configuration files in the folder `config
 
 The following command will create the synthetic dataset and start training the model on it:
 ```bash
-python -m sold2.experiment --mode train --dataset_config config/synthetic_dataset.yaml --model_config config/train_detector.yaml --exp_name sold2_synth
+python -m sold2.experiment --mode train --dataset_config sold2/config/synthetic_dataset.yaml --model_config sold2/config/train_detector.yaml --exp_name sold2_synth
 ```
 </details>
 
@@ -48,12 +48,12 @@ python -m sold2.experiment --mode train --dataset_config config/synthetic_datase
 
 Note that this step can take one to several days depending on your machine and on the size of the dataset. You can set the batch size to the maximum capacity that your GPU can handle. Prior to this step, make sure that the dataset config file `config/wireframe_dataset.yaml` has the lines `gt_source_train` and `gt_source_test` commented and you should also disable the photometric and homographic augmentations.
 ```bash
-python -m sold2.experiment --exp_name wireframe_train --mode export --resume_path <path to your previously trained sold2_synth> --model_config config/train_detector.yaml --dataset_config config/wireframe_dataset.yaml --checkpoint_name <name of the best checkpoint> --export_dataset_mode train --export_batch_size 4
+python -m sold2.experiment --exp_name wireframe_train --mode export --resume_path <path to your previously trained sold2_synth> --model_config sold2/config/train_detector.yaml --dataset_config sold2/config/wireframe_dataset.yaml --checkpoint_name <name of the best checkpoint> --export_dataset_mode train --export_batch_size 4
 ```
 
 You can similarly perform the same for the test set:
 ```bash
-python -m sold2.experiment --exp_name wireframe_test --mode export --resume_path <path to your previously trained sold2_synth> --model_config config/train_detector.yaml --dataset_config config/wireframe_dataset.yaml --checkpoint_name <name of the best checkpoint> --export_dataset_mode test --export_batch_size 4
+python -m sold2.experiment --exp_name wireframe_test --mode export --resume_path <path to your previously trained sold2_synth> --model_config sold2/config/train_detector.yaml --dataset_config sold2/config/wireframe_dataset.yaml --checkpoint_name <name of the best checkpoint> --export_dataset_mode test --export_batch_size 4
 ```
 </details>
 
@@ -61,7 +61,7 @@ python -m sold2.experiment --exp_name wireframe_test --mode export --resume_path
  <summary><b>Step3: Compute the ground truth line segments from the raw data</b></summary>
 
 ```bash
-python -m sold2.postprocess.convert_homography_results <name of the previously exported file (e.g. "wireframe_train.h5")> <name of the new data with extracted line segments (e.g. "wireframe_train_gt.h5")> config/export_line_features.yaml
+python -m sold2.postprocess.convert_homography_results <name of the previously exported file (e.g. "wireframe_train.h5")> <name of the new data with extracted line segments (e.g. "wireframe_train_gt.h5")> sold2/config/export_line_features.yaml
 ```
 
 We recommend testing the results on a few samples of your dataset to check the quality of the output, and modifying the hyperparameters if need be. Using a `detect_thresh=0.5` and `inlier_thresh=0.99` proved to be successful for the Wireframe dataset in our case for example.
@@ -73,17 +73,17 @@ We recommend testing the results on a few samples of your dataset to check the q
 We found it easier to pretrain the detector alone first, before fine-tuning it with the descriptor part.
 Uncomment the lines 'gt_source_train' and 'gt_source_test' in `config/wireframe_dataset.yaml` and fill them with the path to the h5 file generated in the previous step.
 ```bash
-python -m sold2.experiment --mode train --dataset_config config/wireframe_dataset.yaml --model_config config/train_detector.yaml --exp_name sold2_wireframe
+python -m sold2.experiment --mode train --dataset_config sold2/config/wireframe_dataset.yaml --model_config sold2/config/train_detector.yaml --exp_name sold2_wireframe
 ```
 
 Alternatively, you can also fine-tune the already trained synthetic model:
 ```bash
-python -m sold2.experiment --mode train --dataset_config config/wireframe_dataset.yaml --model_config config/train_detector.yaml --exp_name sold2_wireframe --pretrained --pretrained_path <path ot the pre-trained sold2_synth> --checkpoint_name <name of the best checkpoint>
+python -m sold2.experiment --mode train --dataset_config sold2/config/wireframe_dataset.yaml --model_config sold2/config/train_detector.yaml --exp_name sold2_wireframe --pretrained --pretrained_path <path ot the pre-trained sold2_synth> --checkpoint_name <name of the best checkpoint>
 ```
 
 Lastly, you can resume a training that was stopped:
 ```bash
-python -m sold2.experiment --mode train --dataset_config config/wireframe_dataset.yaml --model_config config/train_detector.yaml --exp_name sold2_wireframe --resume --resume_path <path to the  model to resume> --checkpoint_name <name of the last checkpoint>
+python -m sold2.experiment --mode train --dataset_config sold2/config/wireframe_dataset.yaml --model_config sold2/config/train_detector.yaml --exp_name sold2_wireframe --resume --resume_path <path to the  model to resume> --checkpoint_name <name of the last checkpoint>
 ```
 </details>
 
@@ -92,7 +92,7 @@ python -m sold2.experiment --mode train --dataset_config config/wireframe_datase
 
 You first need to modify the field 'return_type' in `config/wireframe_dataset.yaml` to 'paired_desc'. The following command will then train the full model (detector + descriptor) on the Wireframe dataset:
 ```bash
-python -m sold2.experiment --mode train --dataset_config config/wireframe_dataset.yaml --model_config config/train_full_pipeline.yaml --exp_name sold2_full_wireframe --pretrained --pretrained_path <path ot the pre-trained sold2_wireframe> --checkpoint_name <name of the best checkpoint>
+python -m sold2.experiment --mode train --dataset_config sold2/config/wireframe_dataset.yaml --model_config sold2/config/train_full_pipeline.yaml --exp_name sold2_full_wireframe --pretrained --pretrained_path <path ot the pre-trained sold2_wireframe> --checkpoint_name <name of the best checkpoint>
 ```
 </details>
 
