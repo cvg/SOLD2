@@ -298,7 +298,7 @@ class WunschLineMatcher(object):
                         / valid_scores2.sum(2))
         line_scores = (line_scores1 + line_scores2) / 2
         topk_lines = torch.argsort(line_scores,
-                                axis=1)[:, -self.top_k_candidates:]
+                                dim=1)[:, -self.top_k_candidates:]
         scores, topk_lines = scores.cpu().numpy(), topk_lines.cpu().numpy()
         # topk_lines.shape = (n_lines1, top_k_candidates)
         top_scores = np.take_along_axis(scores, topk_lines[:, :, None, None],
