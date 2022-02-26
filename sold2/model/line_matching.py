@@ -35,7 +35,7 @@ class WunschLineMatcher(object):
         img_size2 = (desc2.shape[2] * self.grid_size,
                      desc2.shape[3] * self.grid_size)
         device = desc1.device
-        
+
         # Default case when an image has no lines
         if len(line_seg1) == 0:
             return np.empty((0), dtype=int)
@@ -64,12 +64,12 @@ class WunschLineMatcher(object):
 
         # Precompute the distance between line points for every pair of lines
         # Assign a score of -1 for unvalid points
-        scores = (desc1.t() @ desc2).cpu().numpy()
+        scores = desc1.t() @ desc2
         scores[~valid_points1.flatten()] = -1
         scores[:, ~valid_points2.flatten()] = -1
         scores = scores.reshape(len(line_seg1), self.num_samples,
                                 len(line_seg2), self.num_samples)
-        scores = scores.transpose(0, 2, 1, 3)
+        scores = scores.permute(0, 2, 1, 3)
         # scores.shape = (n_lines1, n_lines2, num_samples, num_samples)
 
         # Pre-filter the line candidates and find the best match for each line
@@ -78,7 +78,7 @@ class WunschLineMatcher(object):
         # [Optionally] filter matches with mutual nearest neighbor filtering
         if self.cross_check:
             matches2 = self.filter_and_match_lines(
-                scores.transpose(1, 0, 3, 2))
+                scores.permute(1, 0, 3, 2))
             mutual = matches2[matches] == np.arange(len(line_seg1))
             matches[~mutual] = -1
 
@@ -171,7 +171,7 @@ class WunschLineMatcher(object):
                                   2, self.num_samples)
         line_points = np.empty((num_lines, self.num_samples, 2), dtype=float)
         valid_points = np.empty((num_lines, self.num_samples), dtype=bool)
-        
+
         # Sample the score on a fixed number of points of each line
         n_samples_per_region = 4
         for n in np.arange(2, self.num_samples + 1):
@@ -225,7 +225,7 @@ class WunschLineMatcher(object):
                 cur_line_points,
                 np.zeros((cur_num_lines, self.num_samples - n, 2), dtype=float)],
                 axis=1)
-            
+
             line_points[cur_mask] = cur_line_points
             valid_points[cur_mask] = cur_valid_points
 
@@ -271,10 +271,10 @@ class WunschLineMatcher(object):
                 cur_line_points,
                 np.zeros((cur_num_lines, self.num_samples - n, 2), dtype=float)],
                 axis=1)
-            
+
             line_points[cur_mask] = cur_line_points
             valid_points[cur_mask] = cur_valid_points
-        
+
         return line_points, valid_points
 
     def filter_and_match_lines(self, scores):
@@ -282,27 +282,28 @@ class WunschLineMatcher(object):
         Use the scores to keep the top k best lines, compute the Needleman-
         Wunsch algorithm on each candidate pairs, and keep the highest score.
         Inputs:
-            scores: a (N, M, n, n) np.array containing the pairwise scores
+            scores: a (N, M, n, n) torch.Tensor containing the pairwise scores
                     of the elements to match.
         Outputs:
             matches: a (N) np.array containing the indices of the best match
         """
         # Pre-filter the pairs and keep the top k best candidate lines
-        line_scores1 = scores.max(3)
+        line_scores1 = scores.max(3)[0]
         valid_scores1 = line_scores1 != -1
         line_scores1 = ((line_scores1 * valid_scores1).sum(2)
                         / valid_scores1.sum(2))
-        line_scores2 = scores.max(2)
+        line_scores2 = scores.max(2)[0]
         valid_scores2 = line_scores2 != -1
         line_scores2 = ((line_scores2 * valid_scores2).sum(2)
                         / valid_scores2.sum(2))
         line_scores = (line_scores1 + line_scores2) / 2
-        topk_lines = np.argsort(line_scores,
-                                axis=1)[:, -self.top_k_candidates:]
+        topk_lines = torch.argsort(line_scores,
+                                dim=1)[:, -self.top_k_candidates:]
+        scores, topk_lines = scores.cpu().numpy(), topk_lines.cpu().numpy()
         # topk_lines.shape = (n_lines1, top_k_candidates)
         top_scores = np.take_along_axis(scores, topk_lines[:, :, None, None],
                                         axis=1)
-        
+
         # Consider the reversed line segments as well
         top_scores = np.concatenate([top_scores, top_scores[..., ::-1]],
                                     axis=1)
