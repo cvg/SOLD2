@@ -9,7 +9,7 @@ class Config(object):
     #####################
     ## Dataset setting ##
     #####################
-    DATASET_ROOT = ""  # TODO: path to your datasets folder
+    DATASET_ROOT = os.getenv("DATASET_ROOT", "")  # TODO: path to your datasets folder
     if not os.path.exists(DATASET_ROOT):
         os.makedirs(DATASET_ROOT)
     
@@ -36,6 +36,6 @@ class Config(object):
     ########################
     ## Experiment Setting ##
     ########################
-    EXP_PATH = ""  # TODO: path to your experiments folder
+    EXP_PATH = os.getenv("EXP_PATH", "")  # TODO: path to your experiments folder
     if not os.path.exists(EXP_PATH):
         os.makedirs(EXP_PATH)
