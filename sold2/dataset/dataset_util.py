@@ -20,7 +20,7 @@ def get_dataset(mode="train", dataset_cfg=None):
         )
 
         # Get the collate_fn
-        from dataset.synthetic_dataset import synthetic_collate_fn
+        from .synthetic_dataset import synthetic_collate_fn
         collate_fn = synthetic_collate_fn
 
     # Wireframe dataset
@@ -30,7 +30,7 @@ def get_dataset(mode="train", dataset_cfg=None):
         )
 
         # Get the collate_fn
-        from dataset.wireframe_dataset import wireframe_collate_fn
+        from .wireframe_dataset import wireframe_collate_fn
         collate_fn = wireframe_collate_fn
     
     # Holicity dataset
@@ -40,7 +40,7 @@ def get_dataset(mode="train", dataset_cfg=None):
         )
 
         # Get the collate_fn
-        from dataset.holicity_dataset import holicity_collate_fn
+        from .holicity_dataset import holicity_collate_fn
         collate_fn = holicity_collate_fn
     
     # Dataset merging several datasets in one
@@ -50,7 +50,7 @@ def get_dataset(mode="train", dataset_cfg=None):
         )
 
         # Get the collate_fn
-        from dataset.holicity_dataset import holicity_collate_fn
+        from .holicity_dataset import holicity_collate_fn
         collate_fn = holicity_collate_fn
 
     else:
