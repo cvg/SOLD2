@@ -602,10 +602,10 @@ class WireframeDataset(Dataset):
                 interpolation=cv2.INTER_LINEAR)
             image = np.array(image, dtype=np.uint8)
 
-            # In HW format
-            junctions = (junctions * np.array(
-                self.config['preprocessing']['resize'], np.float)
-                         / np.array(size_old, np.float))
+            # # In HW format
+            # junctions = (junctions * np.array(
+            #     self.config['preprocessing']['resize'], np.float)
+            #              / np.array(size_old, np.float))
 
         # Generate the line heatmap after post-processing
         junctions_xy = np.flip(np.round(junctions).astype(np.int32), axis=1)
@@ -858,10 +858,10 @@ class WireframeDataset(Dataset):
                 interpolation=cv2.INTER_LINEAR)
             image = np.array(image, dtype=np.uint8)
 
-            # In HW format
-            junctions = (junctions * np.array(
-                self.config['preprocessing']['resize'], np.float)
-                         / np.array(size_old, np.float))
+            # # In HW format
+            # junctions = (junctions * np.array(
+            #     self.config['preprocessing']['resize'], np.float)
+            #              / np.array(size_old, np.float))
 
         # Optionally convert the image to grayscale
         if self.config["gray_scale"]:
