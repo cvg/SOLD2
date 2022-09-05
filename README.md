@@ -14,6 +14,21 @@ Matching with a moving camera:
 
 ## Usage
 
+### Using from kornia
+
+SOLD² is integrated into [kornia](https://github.com/kornia/kornia) library since version 0.6.7.
+
+ ```
+ pip install kornia==0.6.7
+ ```
+
+ Then you can import it as 
+ ```python3
+ from kornia.feature import SOLD2
+ ```
+
+ See tutorial on using SOLD² from kornia [here](https://kornia-tutorials.readthedocs.io/en/latest/line_detection_and_matching_sold2.html).
+
 ### Installation
 
 We recommend using this code in a Python environment (e.g. venv or conda). The following script installs the necessary requirements with pip:
