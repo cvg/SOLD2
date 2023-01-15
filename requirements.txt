@@ -15,6 +15,6 @@ opencv-python==4.0.1.23
 opencv-contrib-python==4.0.1.23
 scikit-learn
 scikit-image
-kornia
+kornia==0.3.0
 shapely
 jupyter
