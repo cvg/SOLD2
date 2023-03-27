@@ -14,6 +14,7 @@ from .metrics import super_nms
 from .line_detection import LineSegmentDetectionModule
 from .line_matching import WunschLineMatcher
 from ..train import convert_junc_predictions
+from ..misc.train_utils import adapt_checkpoint
 from .line_detector import line_map_to_segments
 
 
@@ -29,7 +30,8 @@ class LineMatcher(object):
         # Initialize the cnn backbone
         self.model = get_model(model_cfg, loss_weights)
         checkpoint = torch.load(ckpt_path, map_location=self.device)
-        self.model.load_state_dict(checkpoint["model_state_dict"])
+        checkpoint = adapt_checkpoint(checkpoint["model_state_dict"])
+        self.model.load_state_dict(checkpoint)
         self.model = self.model.to(self.device)
         self.model = self.model.eval()
 
@@ -50,6 +52,8 @@ class LineMatcher(object):
             print(f"[Debug] {key}: {val}")
         # print("[Debug] detect_thresh: %f" % (line_detector_cfg["detect_thresh"]))
         # print("[Debug] num_samples: %d" % (line_detector_cfg["num_samples"]))
+        
+
 
     # Perform line detection and descriptor inference on a single image
     def line_detection(self, input_image, valid_mask=None,

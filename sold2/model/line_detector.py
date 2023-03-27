@@ -10,6 +10,7 @@ from .model_util import get_model
 from .loss import get_loss_and_weights
 from .line_detection import LineSegmentDetectionModule
 from ..train import convert_junc_predictions
+from ..misc.train_utils import adapt_checkpoint
 
 
 def line_map_to_segments(junctions, line_map):
@@ -54,7 +55,8 @@ class LineDetector(object):
         # Initialize the cnn backbone
         self.model = get_model(model_cfg, loss_weights)
         checkpoint = torch.load(ckpt_path, map_location=self.device)
-        self.model.load_state_dict(checkpoint["model_state_dict"])
+        checkpoint = adapt_checkpoint(checkpoint["model_state_dict"])
+        self.model.load_state_dict(checkpoint)
         self.model = self.model.to(self.device)
         self.model = self.model.eval()
 

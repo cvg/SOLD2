@@ -52,6 +52,14 @@ def remove_old_checkpoints(checkpoint_root, max_ckpt=15):
             print("[Debug] Remove outdated checkpoint %s" % (full_name))
 
 
+def adapt_checkpoint(state_dict):
+    for k, v in state_dict.items():
+        if k.startswith('module.'):
+            state_dict[k[7:]] = v
+            del state_dict[k]
+    return state_dict
+
+
 ################
 ## HDF5 utils ##
 ################
