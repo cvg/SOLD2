@@ -53,11 +53,13 @@ def remove_old_checkpoints(checkpoint_root, max_ckpt=15):
 
 
 def adapt_checkpoint(state_dict):
+    new_state_dict = {}
     for k, v in state_dict.items():
         if k.startswith('module.'):
-            state_dict[k[7:]] = v
-            del state_dict[k]
-    return state_dict
+            new_state_dict[k[7:]] = v
+        else:
+            new_state_dict[k] = v
+    return new_state_dict
 
 
 ################
