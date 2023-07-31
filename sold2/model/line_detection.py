@@ -238,7 +238,7 @@ class LineSegmentDetectionModule(object):
         h_block = round(H / (1 + (num_blocks - 1) * increase_ratio))
         w_block = round(W / (1 + (num_blocks - 1) * increase_ratio))
 
-        count_map = torch.zeros(heatmap.shape, dtype=torch.int,
+        count_map = torch.zeros(heatmap.shape, dtype=torch.float,
                                 device=heatmap.device)
         heatmap_output = torch.zeros(heatmap.shape, dtype=torch.float,
                                      device=heatmap.device)
