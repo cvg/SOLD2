@@ -115,8 +115,8 @@ python -m sold2.experiment --mode train --dataset_config sold2/config/wireframe_
 ### Pretrained models
 
 We provide the checkpoints of two pretrained models:
-- [sold2_synthetic.tar](https://www.polybox.ethz.ch/index.php/s/Lu8jWo7nMKal9yb): SOLD² detector trained on the synthetic dataset only.
-- [sold2_wireframe.tar](https://www.polybox.ethz.ch/index.php/s/blOrW89gqSLoHOk): full version of SOLD² trained on the Wireframe dataset.
+- [sold2_synthetic.tar](https://cvg-data.inf.ethz.ch/SOLD2/sold2_synthetic.tar): SOLD² detector trained on the synthetic dataset only.
+- [sold2_wireframe.tar](https://cvg-data.inf.ethz.ch/SOLD2/sold2_wireframe.tar): full version of SOLD² trained on the Wireframe dataset.
  
 Note that you do not need to untar the models, you can directly used them as they are.
 
