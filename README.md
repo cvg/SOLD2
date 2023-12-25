@@ -27,7 +27,7 @@ SOLD² is integrated into [kornia](https://github.com/kornia/kornia) library sin
  from kornia.feature import SOLD2
  ```
 
- See tutorial on using SOLD² from kornia [here](https://kornia-tutorials.readthedocs.io/en/latest/line_detection_and_matching_sold2.html).
+ See tutorial on using SOLD² from kornia [here](https://kornia.github.io/tutorials/nbs/line_detection_and_matching_sold2.html).
 
 ### Installation
 
